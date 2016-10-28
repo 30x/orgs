@@ -1,0 +1,22 @@
+{
+  "name": "orgs",
+  "version": "0.0.1",
+  "description": "provide Edge organization info",
+  "main": "orgs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/30x/orgs.git"
+  },
+  "author": "Michael Russo",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/30x/orgs/issues"
+  },
+  "homepage": "https://github.com/30x/orgs#readme",
+  "dependencies": {
+    "http-helper-functions": "0.0.61"
+  }
+}
