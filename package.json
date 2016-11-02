@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/30x/orgs#readme",
   "dependencies": {
-    "http-helper-functions": "0.0.61"
+    "http-helper-functions": "0.0.66",
+    "permissions-helper-functions": "0.0.11"
   }
 }

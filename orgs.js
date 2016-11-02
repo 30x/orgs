@@ -1,8 +1,9 @@
 'use strict'
-var http = require('http')
-var https = require('https')
-var url = require('url')
-var lib = require('http-helper-functions')
+const http = require('http')
+const https = require('https')
+const url = require('url')
+const lib = require('http-helper-functions')
+const pLib = require('permissions-helper-functions')
 
 const configuredLoginAddress = process.env.APIGEE_LOGIN_ADDRESS
 const configuredEdgeAddress = process.env.EDGE_ADDRESS
@@ -12,19 +13,26 @@ const clientSecret = process.env.ORGS_CLIENTSECRET
 const keyspaceCache = {}
 
 function getOrgInfo(req, res, orgName){
-  var org = {}
-  org.isA = "Org"
-  org.id = orgName
-  getCpsDetails(orgName, function(err, ring, keyspace, tenantID, customer){
-    if(err)
-      lib.internalError(res, err)
-    else{
-      org.kvmRing = ring
-      org.kvmKeyspace = keyspace
-      org.tenantID = tenantID
-      returnOrg(req, res, org, null)
-    }
-  })
+  var user = lib.getUser(req.headers.authorization)
+  if (user == null)
+    lib.unauthorized(req, res)
+  else {
+    pLib.ifAllowedThen(req, res, '/v1/o/'+orgName, null, 'read', function(){
+      var org = {}
+      org.isA = "Org"
+      org.id = orgName
+      getCpsDetails(orgName, function (err, ring, keyspace, tenantID, customer) {
+        if (err)
+          lib.internalError(res, err)
+        else {
+          org.kvmRing = ring
+          org.kvmKeyspace = keyspace
+          org.tenantID = tenantID
+          returnOrg(req, res, org, null)
+        }
+      })
+    })
+  }
 }
 
 
